@@ -16,3 +16,8 @@ If there is only 1 release that is an apk, it will get downloaded properly. if t
 check the code for urself lmao
 (but seriously, if u think this is malicious or malware, look at the code.)
 
+
+
+# NOTE
+this can be weird at times. its mostly due to how adb works tho.
+
