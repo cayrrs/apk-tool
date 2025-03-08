@@ -4,10 +4,9 @@ import subprocess
 import requests
 import zipfile
 import shutil
-import curses  # Now works on Windows with windows-curses
+import curses  
 import time
 
-# Function to install dependencies automatically
 def install_dependencies():
     dependencies = ["requests", "windows-curses"]
     for dep in dependencies:
@@ -18,7 +17,6 @@ def install_dependencies():
             print(f"{dep} is missing. Installing...")
             subprocess.run([sys.executable, "-m", "pip", "install", dep], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-# Function to initialize curses
 def init_curses():
     try:
         stdscr = curses.initscr()
@@ -26,7 +24,7 @@ def init_curses():
         curses.cbreak()
         stdscr.keypad(True)
         curses.start_color()
-        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_CYAN)  # Selected option
+        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_CYAN)  
         curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLACK)  # Unselected option
         curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_BLUE)   # Border color
         curses.init_pair(4, curses.COLOR_GREEN, curses.COLOR_BLACK)  # Loading bar color
@@ -35,24 +33,20 @@ def init_curses():
         print(f"Failed to initialize curses: {e}")
         sys.exit(1)
 
-# Function to clean up curses
 def cleanup_curses(stdscr):
     curses.nocbreak()
     stdscr.keypad(False)
     curses.echo()
     curses.endwin()
 
-# Function to display a bordered menu with arrow key navigation
 def display_menu(stdscr, title, options, selected_index):
     stdscr.clear()
     height, width = stdscr.getmaxyx()
 
-    # Draw border
     stdscr.attron(curses.color_pair(3))
     stdscr.border()
     stdscr.attroff(curses.color_pair(3))
 
-    # Add title with massive borders
     title_border = "╔" + "═" * (len(title) + 4) + "╗"
     title_text = f"║  {title}  ║"
     title_border_bottom = "╚" + "═" * (len(title) + 4) + "╝"
@@ -61,7 +55,6 @@ def display_menu(stdscr, title, options, selected_index):
     stdscr.addstr(3, (width - len(title_text)) // 2, title_text, curses.color_pair(3) | curses.A_BOLD)
     stdscr.addstr(4, (width - len(title_border_bottom)) // 2, title_border_bottom, curses.color_pair(3))
 
-    # Add options
     for i, option in enumerate(options):
         x = (width - len(option)) // 2
         y = 6 + i * 2  # Add more spacing between options
@@ -83,7 +76,6 @@ def display_loading_bar(stdscr, progress):
     stdscr.addstr(bar_y - 1, bar_x + 1, "=" * int(progress * bar_width), curses.color_pair(4))
     stdscr.refresh()
 
-# Function to download a file with a real progress bar
 def download_file(stdscr, url, output_path):
     response = requests.get(url, stream=True)
     total_size = int(response.headers.get("content-length", 0))
@@ -98,13 +90,11 @@ def download_file(stdscr, url, output_path):
             display_loading_bar(stdscr, progress)
             stdscr.refresh()
 
-# Function to install ADB
 def install_adb(stdscr):
     adb_url = "https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
     zip_path = os.path.join(os.getcwd(), "platform-tools.zip")
     extract_path = os.path.join(os.getcwd(), "platform-tools")
 
-    # Check if ADB already exists
     if os.path.exists(extract_path):
         stdscr.clear()
         stdscr.addstr(0, 0, "ADB is already installed.", curses.color_pair(4) | curses.A_BOLD)
@@ -112,7 +102,6 @@ def install_adb(stdscr):
         stdscr.getch()
         return
 
-    # Download ADB
     stdscr.clear()
     stdscr.addstr(0, 0, "Downloading ADB...", curses.A_BOLD)
     stdscr.refresh()
@@ -143,7 +132,6 @@ def install_adb(stdscr):
 def is_valid_github_url(url):
     return url.startswith("https://github.com/") and url.endswith(".apk")
 
-# Function to install APK to a connected Android device
 def install_apk(stdscr, apk_path):
     adb_path = os.path.join(os.getcwd(), "platform-tools", "adb.exe")
     if not os.path.exists(adb_path):
