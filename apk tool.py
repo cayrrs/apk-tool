@@ -216,7 +216,7 @@ def display_url_entry(stdscr):
 
     # Add input prompt
     prompt = "Enter URL: "
-    url = get_user_input(stdscr, prompt, 6, (width - len(prompt) - 50) // 2, 50)
+    url = get_user_input(stdscr, prompt, 6, (width - len(prompt) - 50) // 2, 100)
     return url
 
 # Function to find Package-Bundle files
