@@ -4,6 +4,10 @@ import os
 import zipfile
 import re
 
+
+#no comments anywhere cuz i was too lazy to add themn
+#some of this code is ripped from a personal project
+
 choices = ["1: github url\n", "2: apk file\n"]
 
 def downloadfromurl(url, destination):
@@ -107,4 +111,5 @@ def installapk(filename):
 
 
 init()
+
 menu()
