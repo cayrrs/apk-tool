@@ -11,4 +11,5 @@ check the code for urself lmao
 
 # build
 install pyinstaller (pip install pyinstaller)
+
 pyinstaller --onefile apktool.py
